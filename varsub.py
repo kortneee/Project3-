@@ -24,7 +24,7 @@ def substitute(vars,s):
         if check == words[index]:
             words.insert(index,value)
     output = ' '.join(words)
-    print(output)
-varrs= {'$foo$':'carrot'}
+    return(output)
+varrs= {'foo':'carrot'}
 string = 'I enjoy sticks of $foo$ now and then '
 substitute(varrs,string)
