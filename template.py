@@ -31,31 +31,24 @@ opentags = []  # Stack containing open tags inside <body>
 for line in fin:
     isblank = not bool(line.strip())
     if opentags and isblank:
-        checkwords = opentags[0]
-        words = checkwords.split()
-        #Checks each word in opentags for $, #, and @, and edits the string accordingly 
-        for word in range(len(words)):
-            currword = words[word] 
-            if currword[0] == "$" and currword[-1] == "$":
-                word = varsub.substitute(varsfn,currword)
-            if currword[0] == '#':
-                opentags.remove()
-            elif currword[0] == '@':
-                fout.write("<ul>\n")
-                fout.write("<li>",checkwords)
-                fout.write("</li>\n")
-                fout.write("</ul>\n")
-                opentags.remove()
-        if len(opentags) == 0:
-            continue
-        else: 
-            fout.write("</{}>\n".format(opentags.pop()))
+        fout.write("</{}>\n".format(opentags.pop()))
     if not isblank:
         # Line is not blank, must appear in output
         if not opentags:
             # No tags open; start a new paragraph
             fout.write("<p>\n")
             opentags.append("p")
+        line = varsub.substitute(varsfn,line)
+        words = line.split()
+        for word in words: 
+            if word[0] == '#':
+                line = ''
+                continue
+            elif word[0] == '@':
+                fout.write("<ul>\n")
+                fout.write("<li>",line)
+                fout.write("</li>\n")
+                fout.write("</ul>\n")
         fout.write(line)
 # done reading from input file
 fin.close()
