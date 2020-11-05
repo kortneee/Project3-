@@ -33,12 +33,11 @@ for line in fin:
     if opentags and isblank:
         checkwords = opentags[0]
         words = checkwords.split()
-        word = 0
         #Checks each word in opentags for $, #, and @, and edits the string accordingly 
-        for word in len(words):
+        for word in range(len(words)):
             currword = words[word] 
-            if currword[0] == "$" and currword[:-1] == "$":
-                word = varsub.substitute(varsfn,currword[1:-1])
+            if currword[0] == "$" and currword[-1] == "$":
+                word = varsub.substitute(varsfn,currword)
             if currword[0] == '#':
                 opentags.remove()
             elif currword[0] == '@':
