@@ -9,14 +9,22 @@ def substitute(vars,s):
     in vars"""
     words = s.split()
     index = 0
+    #Returns index of variable to be swapped
     for i in range(len(words)):
         word= words[i]
         if word[0] == '$' and word[-1]=='$':
-            del words[i]
             index = i
+    #checks dictionary keys for matches to variable, and swaps 
+    # the variable with the cooresponding value in dictionary 
     for key, value in vars.items():
         check = str(key)
         if check[0]=='$' and check[-1]=='$':
+            del words[index]
+            words.insert(index,value)
+        if check == words[index]:
             words.insert(index,value)
     output = ' '.join(words)
-    return(output)
+    print(output)
+varrs= {'$foo$':'carrot'}
+string = 'I enjoy sticks of $foo$ now and then '
+substitute(varrs,string)
