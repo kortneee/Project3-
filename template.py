@@ -31,19 +31,19 @@ opentags = []  # Stack containing open tags inside <body>
 for line in fin:
     isblank = not bool(line.strip())
     if opentags and isblank:
-        checkwords = opentags.pop()
+        checkwords = opentags[0]
         words = checkwords.split()
         word = 0
         #Checks each word in opentags for $, #, and @, and edits the string accordingly 
-        for word in words: 
-            if word[0] == "$" and word[:-1] == "$":
-                word = varsub.substitute(varsfn,word[1:-1])
-            if word[0] == '#':
+        for word in len(words):
+            currword = words[word] 
+            if currword[0] == "$" and currword[:-1] == "$":
+                word = varsub.substitute(varsfn,currword[1:-1])
+            if currword[0] == '#':
                 opentags.remove()
-            elif word[0] == '@':
-                word = word [1:]
+            elif currword[0] == '@':
                 fout.write("<ul>\n")
-                fout.write("<li>",words[1:])
+                fout.write("<li>",checkwords)
                 fout.write("</li>\n")
                 fout.write("</ul>\n")
                 opentags.remove()
