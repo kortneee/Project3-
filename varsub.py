@@ -14,6 +14,7 @@ def substitute(vars,s):
         word= words[i]
         if word[0] == '$' and word[-1]=='$':
             index = i
+
     #checks dictionary keys for matches to variable, and swaps 
     # the variable with the cooresponding value in dictionary 
     for key, value in vars.items():
@@ -21,10 +22,8 @@ def substitute(vars,s):
         if check[0]=='$' and check[-1]=='$':
             del words[index]
             words.insert(index,value)
-        if check == words[index]:
+        if check == (words[index])[1:-1]:
+            del words[index]
             words.insert(index,value)
     output = ' '.join(words)
     return(output)
-varrs= {'foo':'carrot'}
-string = 'I enjoy sticks of $foo$ now and then '
-substitute(varrs,string)
