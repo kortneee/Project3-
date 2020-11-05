@@ -8,10 +8,15 @@ def substitute(vars,s):
     """Takes dictionary vars, and replaces the string, s, with the variables's matching value
     in vars"""
     words = s.split()
-    for w in words:
-        if w[0] == "$" and w[:-1] == "$":
-            for key, value in vars.items():
-                if key == w:
-                    print (value) 
-                if key == w[1:-1]:
-                    print(value)
+    index = 0
+    for i in range(len(words)):
+        word= words[i]
+        if word[0] == '$' and word[-1]=='$':
+            del words[i]
+            index = i
+    for key, value in vars.items():
+        check = str(key)
+        if check[0]=='$' and check[-1]=='$':
+            words.insert(index,value)
+    output = ' '.join(words)
+    return(output)
