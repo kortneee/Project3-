@@ -43,12 +43,12 @@ for line in fin:
         fout.write("</{}>\n".format(opentags.pop()))
     if not isblank:
         # Line is not blank must appear in output
-        ls = line.split()
         if not opentags:
             # No tags open; start a new paragraph
             fout.write("<p>\n")
             opentags.append("p")
         line = varsub.substitute(varsfn,line)
+        ls = line.strip().split(" ")
         if ls[0] == '#':
             continue
         elif ls[0] == '@':
@@ -57,7 +57,6 @@ for line in fin:
             fout.write("</li>\n")
             fout.write("</ul>\n")
         fout.write(line)
-        print(line)
 # done reading from input file
 fin.close()
 
