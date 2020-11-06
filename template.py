@@ -50,11 +50,11 @@ for line in fin:
         if ls[0] == '@':
             if not opentags:
                 fout.write("<ul>\n")
+                opentags.append("ul")
             line = line[1:]
             fout.write("<li>\n")
             fout.write(line)
             fout.write("</li>\n")
-            opentags.append("ul")
             continue
         # Line is not blank must appear in output
         if not opentags:
