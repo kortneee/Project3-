@@ -37,6 +37,7 @@ fout.write("<html>\n")
 fout.write("<head><title>HTML document</title></head>\n")
 fout.write("<body>\n")
 opentags = []  # Stack containing open tags inside <body>
+whitespace = False
 for line in fin:
     isblank = not bool(line.strip())
     if opentags and isblank:
@@ -47,19 +48,21 @@ for line in fin:
             # No tags open; start a new paragraph
             fout.write("<p>\n")
             opentags.append("p")
-        line = varsub.substitute(varsfn,line)
         ls = line.strip().split(" ")
         if ls[0] == '#':
+            whitespace = True
             continue
-        elif ls[0] == '@':
+        line = varsub.substitute(varsfn,line)
+        if ls[0] == '@':
             fout.write("<ul>\n")
-            fout.write("<li>",line)
+            fout.write("<li>", line)
             fout.write("</li>\n")
             fout.write("</ul>\n")
+        if whitespace: 
+            fout.write(" ")
         fout.write(line)
 # done reading from input file
 fin.close()
-
 # close all open tags in the body
 while opentags:
     fout.write("</{}>\n".format(opentags.pop()))
@@ -70,3 +73,4 @@ fout.write("</html>\n")
 
 # done writing to output file
 fout.close()
+print(fout)
