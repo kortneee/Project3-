@@ -55,7 +55,8 @@ for line in fin:
         line = varsub.substitute(varsfn,line)
         if ls[0] == '@':
             fout.write("<ul>\n")
-            fout.write("<li>", line)
+            fout.write("<li>\n")
+            fout.write(line)
             fout.write("</li>\n")
             fout.write("</ul>\n")
         if whitespace: 
