@@ -44,15 +44,9 @@ for line in fin:
         fout.write("</{}>\n".format(opentags.pop()))
     if not isblank:
         ls = line.strip().split(" ")
+        whitespace =True
         if ls[0] == '#':
-            whitspace = True
             continue
-        # Line is not blank must appear in output
-        if not opentags:
-            # No tags open; start a new paragraph
-            fout.write("<p>\n")
-            opentags.append("p")
-        line = varsub.substitute(varsfn,line)
         if ls[0] == '@':
             line = line[1:]
             fout.write("<ul>\n")
@@ -60,6 +54,12 @@ for line in fin:
             fout.write(line)
             fout.write("</li>\n")
             fout.write("</ul>\n")
+        # Line is not blank must appear in output
+        if not opentags:
+            # No tags open; start a new paragraph
+            fout.write("<p>\n")
+            opentags.append("p")
+        line = varsub.substitute(varsfn,line)
         if whitespace: 
             fout.write(" ")
         fout.write(line)
@@ -74,4 +74,3 @@ fout.write("</html>\n")
 
 # done writing to output file
 fout.close()
-print(fout)
