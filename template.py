@@ -48,12 +48,14 @@ for line in fin:
         if ls[0] == '#':
             continue
         if ls[0] == '@':
+            if not opentags:
+                fout.write("<ul>\n")
             line = line[1:]
-            fout.write("<ul>\n")
             fout.write("<li>\n")
             fout.write(line)
             fout.write("</li>\n")
-            fout.write("</ul>\n")
+            opentags.append("ul")
+            continue
         # Line is not blank must appear in output
         if not opentags:
             # No tags open; start a new paragraph
