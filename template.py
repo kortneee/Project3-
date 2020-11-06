@@ -43,17 +43,18 @@ for line in fin:
     if opentags and isblank:
         fout.write("</{}>\n".format(opentags.pop()))
     if not isblank:
+        ls = line.strip().split(" ")
+        if ls[0] == '#':
+            whitspace = True
+            continue
         # Line is not blank must appear in output
         if not opentags:
             # No tags open; start a new paragraph
             fout.write("<p>\n")
             opentags.append("p")
-        ls = line.strip().split(" ")
-        if ls[0] == '#':
-            whitespace = True
-            continue
         line = varsub.substitute(varsfn,line)
         if ls[0] == '@':
+            line = line[1:]
             fout.write("<ul>\n")
             fout.write("<li>\n")
             fout.write(line)
@@ -67,7 +68,6 @@ fin.close()
 # close all open tags in the body
 while opentags:
     fout.write("</{}>\n".format(opentags.pop()))
-
 # print the standard footer that closes body and html tags
 fout.write("</body>\n")
 fout.write("</html>\n")
