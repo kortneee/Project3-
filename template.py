@@ -17,7 +17,6 @@ except IndexError:
     print("Usage: python template.py variable.txt infile.txt outfile.html")
     sys.exit()
 
-# open input and output files
 try:
     fin = open(infn,"r")
 except OSError: 
@@ -31,13 +30,13 @@ try:
 except OSError: 
     ("Output file cannot be opened")
 
-# print header
+# Print header
 fout.write("<!DOCTYPE html>\n")
 fout.write("<html>\n")
 fout.write("<head><title>HTML document</title></head>\n")
 fout.write("<body>\n")
-opentags = []  # Stack containing open tags inside <body>
-whitespace = False
+opentags = []       # Stack containing open tags inside <body>
+whitespace = False  # Keep track of whitespaces
 for line in fin:
     isblank = not bool(line.strip())
     if opentags and isblank:
@@ -45,8 +44,12 @@ for line in fin:
     if not isblank:
         ls = line.strip().split(" ")
         whitespace =True
-        if ls[0] == '#':
+
+        #Ends processing line if begins with #
+        if ls[0] == '#':  
             continue
+
+        #Adds list to out file if line begins with @
         if ls[0] == '@':
             if not opentags:
                 fout.write("<ul>\n")
@@ -55,21 +58,31 @@ for line in fin:
             fout.write("<li>\n")
             fout.write(line)
             fout.write("</li>\n")
-            continue
-        # Line is not blank must appear in output
+            continue   #Ends processing list
+
+        #writes paragraph if no tags open
         if not opentags:
-            # No tags open; start a new paragraph
             fout.write("<p>\n")
             opentags.append("p")
-        line = varsub.substitute(varsfn,line)
-        if whitespace: 
+        
+        #enters varsub as a dict to substitute words
+        varsdict = {}
+        for f in varin:
+            (key, val) = f.split("=")
+            varsdict[key] = val.strip("\n")
+        line = varsub.substitute(varsdict,line)
+
+        #Adds space to paragraph so end word of lineA and start word 
+        #line B dont combine
+        if whitespace:
             fout.write(" ")
         fout.write(line)
-# done reading from input file
 fin.close()
+
 # close all open tags in the body
 while opentags:
     fout.write("</{}>\n".format(opentags.pop()))
+
 # print the standard footer that closes body and html tags
 fout.write("</body>\n")
 fout.write("</html>\n")
